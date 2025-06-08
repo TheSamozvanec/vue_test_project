@@ -1,0 +1,48 @@
+<template>
+  <aside :style="SetColor">
+    <h1>Welcome!!!</h1>
+    <p><a href="#">text text text 1</a></p>
+    <p><a href="#">text text text 2</a></p>
+    <p><a href="#">text text text 3</a></p>
+    <p><a href="#">text text text 4</a></p>
+    <p><a href="#">text text text 5</a></p>
+    <p><a href="#">text text text 6</a></p>
+  </aside>
+</template>
+
+<script lang="ts">
+import { defineComponent } from 'vue';
+
+export default defineComponent({
+  props: {
+    title: {
+      type: Boolean,
+      required: false,
+      default: true,
+    },
+  },
+  computed: {
+    SetColor() {
+      return { backgroundColor: this.title ? 'rgb(24, 24, 35)' : 'aqua' };
+    },
+  },
+});
+</script>
+
+<style scoped>
+aside {
+  background-color: aqua;
+  padding: 3px;
+  width: 30%;
+  min-height: 30em;
+  text-align: center;
+  transition: all 1s ease-in;
+}
+aside.dark {
+  background-color: rgb(24, 24, 35);
+}
+p {
+  background-color: rgba(255, 255, 255, 0);
+  text-align: justify;
+}
+</style>
