@@ -1,5 +1,5 @@
 <template>
-  <header :style="SetColor">
+  <header :className="tema">
     <ToggleStyle @set-tema="setHeader"/>
     <div class="use">Content</div>
     <div>Products</div>
@@ -18,19 +18,14 @@ export default defineComponent({
   },
   data(){
     return{
-      tema:true
+      tema:'dark'
     }
   },
   methods:{
     setHeader() {
-      this.tema=!this.tema;
+      this.tema=this.tema? '':'dark';
       this.$emit('setTema');
     },
-  },
-  computed:{
-    SetColor() {
-      return {backgroundColor:this.tema?'rgb(24, 24, 35)':'aqua'}
-    }
   },
   emits:['setTema'],
 });
@@ -45,11 +40,11 @@ header {
   justify-content: center;
   user-select: none;
   transition: all 1s ease-in;
-  /*background-color: aqua;*/
+  background-color: aqua;
 }
-/*header.dark{
+header.dark{
   background-color:  rgb(24, 24, 35);
-}*/
+}
 div {
   margin: 3px;
   padding: 5px;

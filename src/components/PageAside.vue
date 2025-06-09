@@ -1,5 +1,5 @@
 <template>
-  <aside :style="SetColor">
+  <aside :className="tema">
     <h1>Welcome!!!</h1>
     <p><a href="#">text text text 1</a></p>
     <p><a href="#">text text text 2</a></p>
@@ -15,16 +15,11 @@ import { defineComponent } from 'vue';
 
 export default defineComponent({
   props: {
-    title: {
-      type: Boolean,
+    tema: {
+      type: String,
       required: false,
-      default: true,
-    },
-  },
-  computed: {
-    SetColor() {
-      return { backgroundColor: this.title ? 'rgb(24, 24, 35)' : 'aqua' };
-    },
+      default:'dark',
+    }
   },
 });
 </script>

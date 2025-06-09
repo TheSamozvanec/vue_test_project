@@ -1,8 +1,8 @@
 <template>
   <PageHeader @set-tema="SetAll"/>
   <div>
-    <PageMain :title="tema"/>
-    <PageAside :title="tema"/>
+    <PageMain :tema="tema"/>
+    <PageAside :tema="tema"/>
   </div>
   <PageFooter/>
 </template>
@@ -22,12 +22,12 @@ export default defineComponent({
   },
   data(){
     return{
-      tema:true
+      tema:"dark"
     }
   },
   methods:{
     SetAll() {
-      this.tema=!this.tema;
+      this.tema=this.tema? '':'dark';
     },
   },
 

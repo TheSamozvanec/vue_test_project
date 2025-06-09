@@ -1,5 +1,5 @@
 <template>
-  <main :style="SetColor">
+  <main :className="tema">
     <div> 1</div>
     <div> 2</div>
     <div> 3</div>
@@ -20,15 +20,10 @@ import { defineComponent } from 'vue'
 
 export default defineComponent({
   props: {
-    title: {
-      type: Boolean,
+    tema: {
+      type: String,
       required: false,
-      default:true,
-    }
-  },
-  computed:{
-    SetColor() {
-      return {backgroundColor:this.title?'rgb(24, 24, 35)':'beige'}
+      default:'dark',
     }
   },
 });

@@ -1,6 +1,6 @@
 <template>
-  <button id="button" :style="btStile" @:click="Toggled">
-      <span class="on">on</span><br/>
+  <button id="button" :className="tema" @:click="Toggled">
+      <span class="on">on </span><br/>
       <span class="off">off</span>
   </button>
 </template>
@@ -11,21 +11,16 @@ import { defineComponent } from 'vue'
 export default defineComponent({
   data(){
    return {
-    tema:true
+    tema:'dark'
    }
   },
   methods:{
     Toggled (){
-      this.tema=!this.tema
+      this.tema=this.tema? '':'dark';
       this.$emit('setTema')
     }
   },
-  computed:{
-    btStile(){
-      return {backgroundColor:this.tema? 'red':'green'}
-    }
-
-  },
+  
   emits:['setTema'],
 })
 </script>
@@ -33,14 +28,14 @@ export default defineComponent({
 <style scoped>
  #button {
     width: 3em;
-   /* background-color: green;*/
+   background-color: green;
     border: 3px ridge red;
     box-shadow: 1px 2px 3px 3px;
     border-radius: 20%;
   }
- /* #button.dark {
+ #button.dark {
     background-color: red;
-  }*/
+  }
   #button:active{
     transform: scale(0.95);
     box-shadow: 1px 1px 1px 1px;
