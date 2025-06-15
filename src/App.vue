@@ -1,6 +1,6 @@
 <!--html код и созданные компоненты-->
 <template>
-  <PageHeader @set-decor="SetPgDecor"/>
+  <PageHeader @set-decor="SetDecor"/>
   <div>
     <PageMain :decor="decor"/>
     <PageAside :decor="decor"/>
@@ -34,7 +34,7 @@ export default defineComponent({
   },
   // методы управления реактивными переменными
   methods:{
-    SetPgDecor(decor:string) {
+    SetDecor(decor:string) {
       this.decor=decor;
     },
   },

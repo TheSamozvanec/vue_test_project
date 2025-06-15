@@ -1,5 +1,5 @@
 <template>
-  <button id="button" :class="decor" @:click="Toggled">
+  <button id="button" :class="decor" @:click="setDecor">
      {{decor }}
   </button>
 </template>
@@ -16,15 +16,15 @@ export default defineComponent({
    }
   },
   methods:{
-    Toggled (){
+    setDecor (){
       this.decorIndex=this.decorIndex<Decorations.length-1? this.decorIndex+1:0;
       this.decor=Decorations[this.decorIndex];
      // this.decor=this.decor? '':'dark';
       this.$emit('setDecor',this.decor);
-      console.log(this.decor);
-      console.log(Decorations);
-      console.log(Decorations.length);
-      console.log(this.decorIndex);
+      //console.log(this.decor);
+      //console.log(Decorations);
+      //console.log(Decorations.length);
+      //console.log(this.decorIndex);
     }
   },
 

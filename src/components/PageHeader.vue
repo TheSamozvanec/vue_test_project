@@ -1,6 +1,6 @@
 <template>
   <header :class="decor">
-    <ToggleStyle @set-decor="setHeader"/>
+    <ToggleStyle @set-decor="setDecor"/>
     <div class="use">Content</div>
     <div>Products</div>
     <div>Blog</div>
@@ -22,7 +22,7 @@ export default defineComponent({
     }
   },
   methods:{
-    setHeader(decor:string) {
+    setDecor(decor:string) {
       this.decor=decor;
       this.$emit('setDecor',this.decor);
     },
