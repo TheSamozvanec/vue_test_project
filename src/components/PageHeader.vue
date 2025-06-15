@@ -1,6 +1,6 @@
 <template>
-  <header :className="tema">
-    <ToggleStyle @set-tema="setHeader"/>
+  <header :class="decor">
+    <ToggleStyle @set-decor="setHeader"/>
     <div class="use">Content</div>
     <div>Products</div>
     <div>Blog</div>
@@ -18,16 +18,16 @@ export default defineComponent({
   },
   data(){
     return{
-      tema:'dark'
+      decor:'dark'
     }
   },
   methods:{
-    setHeader() {
-      this.tema=this.tema? '':'dark';
-      this.$emit('setTema');
+    setHeader(decor:string) {
+      this.decor=decor;
+      this.$emit('setDecor',this.decor);
     },
   },
-  emits:['setTema'],
+  emits:['setDecor'],
 });
 </script>
 
@@ -44,6 +44,12 @@ header {
 }
 header.dark{
   background-color:  rgb(24, 24, 35);
+}
+header.green{
+  background-color:   rgb(40, 147, 15);
+}
+header.yellow{
+  background-color:  yellow;
 }
 div {
   margin: 3px;

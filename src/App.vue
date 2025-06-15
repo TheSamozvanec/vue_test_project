@@ -1,33 +1,41 @@
+<!--html код и созданные компоненты-->
 <template>
-  <PageHeader @set-tema="SetAll"/>
+  <PageHeader @set-decor="SetPgDecor"/>
   <div>
-    <PageMain :tema="tema"/>
-    <PageAside :tema="tema"/>
+    <PageMain :decor="decor"/>
+    <PageAside :decor="decor"/>
   </div>
   <PageFooter/>
 </template>
 
+<!-- script подключение модулей и скрипт-код компонента-->
 <script lang="ts">
+// модули (в т.ч. компоненты)
 import { defineComponent } from 'vue'
 import PageHeader from './components/PageHeader.vue';
 import PageFooter from './components/PageFooter.vue';
 import PageMain from './components/PageMain.vue';
 import PageAside from './components/PageAside.vue';
+
+// скрипт-код компонента
 export default defineComponent({
+  // компоненты
   components :{
     PageHeader,
     PageFooter,
     PageMain,
     PageAside,
   },
+  // реактивные переменные
   data(){
     return{
-      tema:"dark"
+      decor:"dark"
     }
   },
+  // методы управления реактивными переменными
   methods:{
-    SetAll() {
-      this.tema=this.tema? '':'dark';
+    SetPgDecor(decor:string) {
+      this.decor=decor;
     },
   },
 

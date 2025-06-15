@@ -1,7 +1,7 @@
 <template>
   <footer>
     <div>
-      Adres: <br />
+      Address: <br />
       г.Город ул.Улица, д. Деревянный
     </div>
     <div>
