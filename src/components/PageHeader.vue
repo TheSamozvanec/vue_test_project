@@ -19,6 +19,7 @@ export default defineComponent({
   data(){
     return{
       decor:'dark'
+      decor:'dark'
     }
   },
   methods:{
@@ -27,6 +28,7 @@ export default defineComponent({
       this.$emit('setDecor',this.decor);
     },
   },
+  emits:['setDecor'],
   emits:['setDecor'],
 });
 </script>
@@ -44,6 +46,12 @@ header {
 }
 header.dark{
   background-color:  rgb(24, 24, 35);
+}
+header.green{
+  background-color:   rgb(40, 147, 15);
+}
+header.yellow{
+  background-color:  yellow;
 }
 header.green{
   background-color:   rgb(40, 147, 15);
