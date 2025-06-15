@@ -1,5 +1,5 @@
 <template>
-  <main :className="tema">
+  <main :class="decor">
     <div> 1</div>
     <div> 2</div>
     <div> 3</div>
@@ -20,7 +20,7 @@ import { defineComponent } from 'vue'
 
 export default defineComponent({
   props: {
-    tema: {
+    decor: {
       type: String,
       required: false,
       default:'dark',
@@ -44,10 +44,16 @@ export default defineComponent({
   main.dark{
     background-color: rgb(24, 24, 35);
   }
+  main.green{
+    background-color:  rgb(40, 147, 15);
+  }
+  main.yellow{
+    background-color: yellow;
+  }
   div{
     background-color: rgb(141, 121, 210);
     border: 1px solid black;
-    box-shadow: 5px 3px 5px 6px;
+    box-shadow: 5px 3px 5px 6px black;
     cursor: grab;
     font-size: 3em;
     transition: all 0.5s ease-in;
@@ -56,7 +62,7 @@ export default defineComponent({
     min-height: 50%;
   }
   div:hover{
-    box-shadow: 1px 1px 3px 3px;
+    box-shadow: 1px 1px 3px 3px black;
     transform: scale(0.97);
   }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <aside :className="tema">
+  <aside :class="decor">
     <h1>Welcome!!!</h1>
     <p><a href="#">text text text 1</a></p>
     <p><a href="#">text text text 2</a></p>
@@ -15,7 +15,7 @@ import { defineComponent } from 'vue';
 
 export default defineComponent({
   props: {
-    tema: {
+    decor: {
       type: String,
       required: false,
       default:'dark',
@@ -35,6 +35,12 @@ aside {
 }
 aside.dark {
   background-color: rgb(24, 24, 35);
+}
+aside.green {
+  background-color: rgb(101, 240, 70);;
+}
+aside.yellow {
+  background-color: greenyellow;
 }
 p {
   background-color: rgba(255, 255, 255, 0);

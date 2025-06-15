@@ -8,8 +8,7 @@ body,
   padding: 0;
   box-sizing: border-box;
 }
-a,
-.green {
+a {
   text-decoration: none;
   color: rgb(189, 0, 88);
   transition: 0.4s;
