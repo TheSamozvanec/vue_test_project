@@ -7,13 +7,9 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { Decorations } from './Decorations';
-import { Decorations } from './Decorations';
-
 export default defineComponent({
   data(){
    return {
-    decorIndex:0,
-    decor:Decorations[0],
     decorIndex:0,
     decor:Decorations[0],
    }

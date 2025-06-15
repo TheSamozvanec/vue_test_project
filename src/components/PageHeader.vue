@@ -19,7 +19,6 @@ export default defineComponent({
   data(){
     return{
       decor:'dark'
-      decor:'dark'
     }
   },
   methods:{
@@ -28,7 +27,6 @@ export default defineComponent({
       this.$emit('setDecor',this.decor);
     },
   },
-  emits:['setDecor'],
   emits:['setDecor'],
 });
 </script>
