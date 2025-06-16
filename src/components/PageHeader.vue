@@ -51,12 +51,6 @@ header.green{
 header.yellow{
   background-color:  yellow;
 }
-header.green{
-  background-color:   rgb(40, 147, 15);
-}
-header.yellow{
-  background-color:  yellow;
-}
 div {
   margin: 3px;
   padding: 5px;
