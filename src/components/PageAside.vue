@@ -3,10 +3,12 @@
     <h1>Welcome!!!</h1>
     <p><a href="/Composition"> Composition</a></p>
     <p><a href="./">Options</a></p>
-    <p><a href="#">text text text 3</a></p>
-    <p><a href="#">text text text 4</a></p>
-    <p><a href="#">text text text 5</a></p>
-    <p><a href="#">text text text 6</a></p>
+    <slot name="push1" />
+    <slot name="push2" />
+    <slot name="push3" />
+    <slot name="push4" />
+    <slot name="push5" />
+    <slot name="push6" />
   </aside>
 </template>
 

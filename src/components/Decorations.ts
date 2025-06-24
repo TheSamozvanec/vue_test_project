@@ -1,1 +1,1 @@
-export const Decorations:string[]=['dark','light','green','yellow']
+export const decorations:string[]=['dark','light','green','yellow']
