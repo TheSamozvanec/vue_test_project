@@ -1,20 +1,20 @@
 <template>
-  <div id="bt" :class="color+' bt'">
+  <div id="bt" :class="color + ' bt'">
     <ButtonTestComposition @set-color="(color) => setColor(color)" />
-    <slot/>
+    <slot />
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import ButtonTestComposition from './ButtonTestComposition.vue';
+import ButtonTestComposition from './Buttons/ButtonTestComposition.vue';
 import type { ISetColorEmit } from './emitsInterface';
 
 const color = ref('dark');
-const emits = defineEmits<ISetColorEmit>()
+const emits = defineEmits<ISetColorEmit>();
 function setColor(val: string) {
- color.value = val;
- emits('set-color',color.value)
+  color.value = val;
+  emits('set-color', color.value);
 }
 </script>
 
@@ -23,17 +23,16 @@ div.bt {
   height: 5em;
   transition: all 0.5s ease-out;
 }
-div.bt.dark{
+div.bt.dark {
   background-color: black;
 }
-div.bt.light{
+div.bt.light {
   background-color: aqua;
 }
-div.bt.green{
-  background-color:green;
+div.bt.green {
+  background-color: green;
 }
-div.bt.yellow{
-  background-color:yellow;
+div.bt.yellow {
+  background-color: yellow;
 }
 </style>
-

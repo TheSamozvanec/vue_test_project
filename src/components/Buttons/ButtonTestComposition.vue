@@ -6,8 +6,8 @@
 
 <script setup lang="ts">
 import { ref, watch } from 'vue';
-import { decorations } from './decorations'
-import type { ISetColorEmit } from './emitsInterface';
+import { decorations } from '../decorations';
+import type { ISetColorEmit } from '../emitsInterface';
 
 const colorIndex = ref(0);
 const color = ref<string>('dark');

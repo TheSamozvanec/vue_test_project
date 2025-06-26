@@ -5,7 +5,7 @@
       :style="{top: positionY+'px', left: positionX+'px'}"
       @mousedown="setDown"
       @mouseup="setUp">
-      Move it with the mouse :) {{ press }}
+      Move it with the mouse :)
     </div>
   </div>
 </template>
@@ -24,7 +24,7 @@ function setDown(){
 function setUp(){
   press.value=false;
 }
-function move(ev:Event){
+function move(ev:MouseEvent){
   if(!(press.value)) return
   positionY.value=(ev.pageY-200);
   positionX.value=(ev.pageX-50);

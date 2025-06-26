@@ -1,12 +1,12 @@
 <template>
-  <button :class="decor+' button'" @:click="setDecor">
+  <button :class="decor + ' button'" @:click="setDecor">
     {{ decor }}
   </button>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { decorations } from './decorations';
+import { decorations } from '../decorations';
 export default defineComponent({
   data() {
     return {

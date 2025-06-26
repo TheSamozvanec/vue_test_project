@@ -1,6 +1,6 @@
 <template>
   <header :class="decor">
-    <ToggleStyle @set-decor="setDecor"/>
+    <ToggleStyle @set-decor="setDecor" />
     <div class="use">Content</div>
     <div>Products</div>
     <div>Blog</div>
@@ -10,24 +10,24 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import ToggleStyle from './ToggleStyle.vue';
+import ToggleStyle from './Buttons/ToggleStyle.vue';
 
 export default defineComponent({
-  components:{
+  components: {
     ToggleStyle,
   },
-  data(){
-    return{
-      decor:'dark'
-    }
+  data() {
+    return {
+      decor: 'dark',
+    };
   },
-  methods:{
-    setDecor(decor:string) {
-      this.decor=decor;
-      this.$emit('setDecor',this.decor);
+  methods: {
+    setDecor(decor: string) {
+      this.decor = decor;
+      this.$emit('setDecor', this.decor);
     },
   },
-  emits:['setDecor'],
+  emits: ['setDecor'],
 });
 </script>
 
@@ -42,14 +42,14 @@ header {
   transition: all 1s ease-in;
   background-color: aqua;
 }
-header.dark{
-  background-color:  rgb(24, 24, 35);
+header.dark {
+  background-color: rgb(24, 24, 35);
 }
-header.green{
-  background-color:   rgb(40, 147, 15);
+header.green {
+  background-color: rgb(40, 147, 15);
 }
-header.yellow{
-  background-color:  yellow;
+header.yellow {
+  background-color: yellow;
 }
 div {
   margin: 3px;
