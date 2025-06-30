@@ -1,8 +1,9 @@
 <template>
-  <div :class="{decor,'main':!pass, 'passing-content':pass}" @mousemove="moveElement">
+  <div :class="(pass? style['passing-content']:style.main)+' '+style[decor]"  
+  @mousemove="moveElement"> 
     {{ viewContent}}
     <div
-      class="personal-data"
+      :class="style['personal-data']"
       v-if="props.toggle"
       :style="{ top: positionY + 'px', left: positionX + 'px' }"
       @mousedown="setMouseDown"
@@ -17,8 +18,8 @@
         @blur='blurSurname'
         @input="inSurname"
         @keypress="hasKeySurname"
-      :class="{ error: !isSurname }"/>
-      <label for="surname" :class="{ error: !isSurname }"> Фамилия </label>
+      :class="!isSurname? style.error:''"/>
+      <label for="surname" :class="!isSurname? style.error:''"> Фамилия </label>
       <br /><span>{{ errorSurnameMassage }}</span>
 
       <br /><input
@@ -30,8 +31,8 @@
         @blur='blurName'
         @input="inName"
         @keypress="hasKeyName"
-      :class="{ error: !isName }"/>
-      <label for="name" :class="{ error: !isName }"> Имя </label>
+      :class="!isName? style.error:''"/>
+      <label for="name" :class="!isName? style.error:''"> Имя </label>
       <br /><span>{{ errorNameMassage }}</span>
 
       <br /><input
@@ -42,9 +43,9 @@
         @mousedown.stop
         @blur="blurEmail"
         @input="inEmail"
-        :class="{ error: !isEmail, sus: susEmail }"
+      :class="(!isEmail? style.error:'') + ' ' + (susEmail? style.sus:'')"
       />
-      <label for="eMail" :class="{ error: !isEmail, sus: susEmail }"> Электронная почта </label>
+      <label for="eMail" :class="(!isEmail? style.error:'') + ' ' + (susEmail? style.sus:'')"> Электронная почта </label>
       <br /><span>{{ errorEmailMassage }}</span>
 
       <br /><input
@@ -57,9 +58,8 @@
         @blur="blurPhone"
         @input="inPhone"
         @keypress="hasKeyPhone"
-        :class="{ error: !isPhone }"
-      />
-      <label for="phone" :class="{ error: !isPhone }"> Номер телефона </label>
+      :class="!isPhone? style.error:''"/>
+      <label for="phone" :class="!isPhone? style.error:''"> Номер телефона </label>
       <br /><span>{{ errorPhoneMassage }} </span>
 
       <br /><input id="approval" type="checkbox"
@@ -67,11 +67,11 @@
         v-model="isApproval"
         @mousedown.stop
         @keypress="checkApproval" />
-      <label for="approval" :class="{ error: !isApproval }">
+      <label for="approval" :class="!isApproval? style.error:''">
         Согласие на обработку персональных данных
       </label>
       <br /><span>{{ errorApprovalMassage }}</span>
-      <br><button class="sub"
+      <br><button :class="style.sub"
         tabindex="6"
         @click="check">
         Отправить
@@ -81,12 +81,15 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref /*watch*/ } from 'vue';
+import { computed, ref, /*watch*/ 
+useCssModule} from 'vue';
 import { hiddenText, instructionsForEnteringPersonalData } from '../differentData/longTexts';
 //___________________________________________props
 const props = defineProps<{ decor: string; toggle: boolean }>();
 //___________________________________________a pass
-const pass = ref(false)
+const pass = ref(false);
+//___________________________________________style
+const style=useCssModule();
 //___________________________________________move panel consts
 const press = ref(false);
 const positionX = ref(450);
@@ -308,7 +311,7 @@ function check(){
   searchParams.set('name',name.value);
   searchParams.set('email',email.value);
   searchParams.set('phone',phone.value);
-  fetch('http://jsonplaceholder.typicode.com/todos/',{
+  fetch('https://jsonplaceholder.typicode.com/users/',{
     method:'post',
     body:searchParams
   }).then((response)=>{
@@ -324,12 +327,19 @@ const viewContent = computed(()=>
 )
 </script>
 
-<style scoped>
-div.main {
+<style lang="scss" module>
+.main {
+  width: 80%;
   position: relative;
   height: 600px;
+  transition: all 1s ease-out;
 }
-div.passing-content{
+.dark{background-color:black;}
+.light{background-color: aqua;}
+.green{background-color: rgb(77, 255, 0);}
+.yellow{background-color: rgb(255, 247, 0);}
+.passing-content{
+  width: 80%;
   margin: 10px auto;
   color:blue;
   padding: 1em;
@@ -346,36 +356,30 @@ div.passing-content{
   padding:3px;
   font-size: 16px;
   text-align: left;
-  /* top:100px;
-  left:100px; */
   width: 400px;
   height: 420px;
   background: linear-gradient(30deg, aqua 10%, green 90%);
   border: 3px ridge red;
-}
-.personal-data input,
-.personal-data label,
-.personal-data span {
+  input,label,span{
   padding-bottom: 3px;
   margin-left: 5px;
   margin-top: 5px;
   font-size: 16px;
-}
-.personal-data input.sus,
-.personal-data label.sus
- {
-  font-weight: bold;
-  color: rgb(178, 66, 6);
-  font-size: 16px;
-}
-.personal-data input.error,
-.personal-data label.error {
+  }
+  .error{
   font-weight: bold;
   color: red;
   font-size: 16px;
-}
-.personal-data .sub{
+  }
+  .sus{
+  font-weight: bold;
+  color: rgb(178, 66, 6);
+  font-size: 16px;
+  }
+  .sub{
   margin-left:150px;
   padding:0.5em;
+  }
 }
+
 </style>
