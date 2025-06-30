@@ -6,7 +6,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { decorations } from '../decorations';
+import { decorations } from '../differentData/decorations';
 export default defineComponent({
   data() {
     return {

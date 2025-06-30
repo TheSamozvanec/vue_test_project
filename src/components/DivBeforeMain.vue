@@ -8,7 +8,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import ButtonTestComposition from './Buttons/ButtonTestComposition.vue';
-import type { ISetColorEmit } from './emitsInterface';
+import type { ISetColorEmit } from './differentData/emitsInterface';
 
 const color = ref('dark');
 const emits = defineEmits<ISetColorEmit>();

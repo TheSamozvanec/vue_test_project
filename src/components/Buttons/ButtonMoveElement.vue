@@ -1,12 +1,12 @@
 <template>
   <button :class="'button2 ' + (toggle ? 'insert' : '')" @click="toggle = !toggle">
-    Show display
+    Персональные данные
   </button>
 </template>
 
 <script setup lang="ts">
 import { ref, watch } from 'vue';
-import type { ISetToggleEmit } from '../emitsInterface';
+import type { ISetToggleEmit } from '../differentData/emitsInterface';
 
 const toggle = ref(false);
 const emits = defineEmits<ISetToggleEmit>();

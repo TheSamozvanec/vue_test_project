@@ -1,12 +1,12 @@
 <template>
-  <button :class="'button2 ' + (filter == 'all' ? 'insert' : '')" @click="filter = 'all'">
+  <button :class="'button2 ' + (filter === 'all' ? 'insert' : '')" @click="filter = 'all'">
     All
   </button>
-  <button :class="'button2 ' + (filter == 'State' ? 'insert' : '')" @click="filter = 'State'">
+  <button :class="'button2 ' + (filter === 'State' ? 'insert' : '')" @click="filter = 'State'">
     State University
   </button>
   <button
-    :class="'button2 ' + (filter == 'University' ? 'insert' : '')"
+    :class="'button2 ' + (filter === 'University' ? 'insert' : '')"
     @click="filter = 'University'"
   >
     University
@@ -15,7 +15,7 @@
 
 <script setup lang="ts">
 import { ref, watch } from 'vue';
-import type { ISetFilterEmit } from '../emitsInterface';
+import type { ISetFilterEmit } from '../differentData/emitsInterface';
 
 const filter = ref('all');
 const emits = defineEmits<ISetFilterEmit>();

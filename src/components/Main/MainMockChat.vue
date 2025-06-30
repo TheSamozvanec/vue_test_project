@@ -1,7 +1,7 @@
 <template>
   <div :class="props.decor + ' main'">
     <template v-for="massage in chat" :key="massage.id">
-      <div class="list" v-if="filter == 'all' || getStatus(massage.idUser) == filter">
+      <div class="list" v-if="filter === 'all' || getStatus(massage.idUser) === filter">
         <p>{{ getName(massage.idUser) }} / {{ getStatus(massage.idUser) }}</p>
         <p class="massage">{{ massage.massage }}</p>
       </div>
@@ -10,15 +10,15 @@
 </template>
 
 <script setup lang="ts">
-import bigUserList from '../mock/BigUserList';
+import bigUserList from '../mock/bigUserList';
 import chat from '../mock/chat';
 
 const props = defineProps<{ decor: string; filter: string }>();
 function getName(idUser: string) {
-  return bigUserList.find((user) => user.id == idUser)?.name;
+  return bigUserList.find((user) => user.id === idUser)?.name;
 }
 function getStatus(idUser: string) {
-  return bigUserList.find((user) => user.id == idUser)?.status;
+  return bigUserList.find((user) => user.id === idUser)?.status;
 }
 </script>
 

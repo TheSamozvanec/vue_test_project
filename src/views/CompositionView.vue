@@ -5,30 +5,30 @@
       v-if="asideInsert > 0 && asideInsert < 3"
       @set-filter="(val: string) => setFilter(val)"
     />
-    <ButtonPanelAPI v-if="asideInsert == 3" @set-filter="(val: string) => setFilter(val)" />
-    <ButtonMoveElement v-if="asideInsert == 4" @set-toggle="(val: boolean) => setToggle(val)" />
+    <ButtonPanelAPI v-if="asideInsert === 3" @set-filter="(val: string) => setFilter(val)" />
+    <ButtonMoveElement v-if="asideInsert === 4" @set-toggle="(val: boolean) => setToggle(val)" />
   </DivBeforeMain>
   <div class="content">
-    <MainComposition :color="color" v-if="asideInsert == 0" />
-    <MainUserData :decor="decor" :filter="filter" v-if="asideInsert == 1" />
-    <MainMockChat :decor="decor" :filter="filter" v-if="asideInsert == 2" />
-    <MainApiData :decor="decor" :filter="filter" v-if="asideInsert == 3" />
-    <MainMoveElement :decor="decor" :toggle="toggle" v-if="asideInsert == 4" />
+    <MainComposition :color="color" v-if="asideInsert === 0" />
+    <MainUserData :decor="decor" :filter="filter" v-if="asideInsert === 1" />
+    <MainMockChat :decor="decor" :filter="filter" v-if="asideInsert === 2" />
+    <MainApiData :decor="decor" :filter="filter" v-if="asideInsert === 3" />
+    <MainMoveElement :decor="decor" :toggle="toggle" v-if="asideInsert === 4" />
     <PageAside :decor="decor">
       <template #push1>
-        <p @click="asideInsert = 0" :class="asideInsert == 0 ? 'insert' : ''">Color illustration</p>
+        <p @click="asideInsert = 0" :class="asideInsert === 0 ? 'insert' : ''">Color illustration</p>
       </template>
       <template #push2>
-        <p @click="asideInsert = 1" :class="asideInsert == 1 ? 'insert' : ''">Mock user data</p>
+        <p @click="asideInsert = 1" :class="asideInsert === 1 ? 'insert' : ''">Mock user data</p>
       </template>
       <template #push3>
-        <p @click="asideInsert = 2" :class="asideInsert == 2 ? 'insert' : ''">Mock chat</p>
+        <p @click="asideInsert = 2" :class="asideInsert === 2 ? 'insert' : ''">Mock chat</p>
       </template>
       <template #push4>
-        <p @click="asideInsert = 3" :class="asideInsert == 3 ? 'insert' : ''">test API data</p>
+        <p @click="asideInsert = 3" :class="asideInsert === 3 ? 'insert' : ''">test API data</p>
       </template>
       <template #push5>
-        <p @click="asideInsert = 4" :class="asideInsert == 4 ? 'insert' : ''">test move display</p>
+        <p @click="asideInsert = 4" :class="asideInsert === 4 ? 'insert' : ''">Personal data test</p>
       </template>
     </PageAside>
   </div>
@@ -43,12 +43,12 @@ import MainUserData from '@/components/Main/MainUserData.vue';
 import PageAside from '@/components/PageAside.vue';
 import PageFooter from '@/components/PageFooter.vue';
 import PageHeader from '@/components/PageHeader.vue';
-import { onMounted, onUpdated, ref } from 'vue';
+import { /*onMounted, onUpdated, */ref } from 'vue';
 import MainApiData from '../components/Main/MainApiData.vue';
 import ButtonPanelMock from '@/components/Buttons/ButtonPanelMock.vue';
 import ButtonPanelAPI from '@/components/Buttons/ButtonPanelAPI.vue';
 import ButtonMoveElement from '@/components/Buttons/ButtonMoveElement.vue';
-import MainMoveElement from '@/components/Main/MainMoveElement.vue';
+import MainMoveElement from '@/components/Main/MainPersonalData.vue';
 
 const asideInsert = ref(0);
 const decor = ref('dark');
@@ -67,8 +67,8 @@ function setFilter(val: string) {
 function setToggle(val: boolean) {
   toggle.value = val;
 }
-onMounted(() => console.log('mounted'));
-onUpdated(() => console.log('update'));
+// onMounted(() => console.log('mounted'));
+// onUpdated(() => console.log('update'));
 </script>
 
 <style scoped>
