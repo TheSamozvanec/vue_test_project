@@ -76,24 +76,27 @@
         @click="check">
         Отправить
       </button>
+      <br /><span>{{ loadText }}</span>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { computed, ref, /*watch*/ 
-useCssModule} from 'vue';
+useCssModule,
+watch} from 'vue';
 import { hiddenText, instructionsForEnteringPersonalData } from '../differentData/longTexts';
 //___________________________________________props
 const props = defineProps<{ decor: string; toggle: boolean }>();
-//___________________________________________a pass
+//___________________________________________different variables
 const pass = ref(false);
+const loadText = ref('');
 //___________________________________________style
 const style=useCssModule();
 //___________________________________________move panel consts
 const press = ref(false);
-const positionX = ref(450);
-const positionY = ref(-100);
+const positionX = ref(200);
+const positionY = ref(-10);
 //___________________________________________initial valid consts
 const surname = ref('');
 const isSurname = ref(false);
@@ -123,8 +126,8 @@ function setMouseUp() {
 }
 function moveElement(ev: MouseEvent) {
   if (!press.value) return;
-  positionY.value = ev.pageY - 300;
-  positionX.value = ev.pageX - 200;
+  positionY.value = ev.pageY - 250;
+  positionX.value = ev.pageX - 300;
 }
 //_____________________________________________initials valid function
 function blurSurname(){
@@ -306,6 +309,7 @@ function check(){
       return;
     } 
   }
+  loadText.value='Отправляю!'
   const searchParams = new URLSearchParams();
   searchParams.set('surname',surname.value);
   searchParams.set('name',name.value);
@@ -318,13 +322,28 @@ function check(){
     if(response.ok){
       pass.value=true;
       alert('Отлично! все получилось!')
-    }}).catch(()=>alert('Произошла ошибка! попробуйте еще раз отправить'));
+      loadText.value='Отлично! Все получилось!'
+    } else throw new Error ('error!')
+  }).catch(()=>{
+    pass.value=false;
+    alert('Произошла ошибка! попробуйте еще раз отправить');
+    loadText.value='К сожалению не получилось. Попробуйте ещё раз.'
+  });
   
 }
-//_______________________________________________view content
+//________________________________________________different variables
 const viewContent = computed(()=>
   pass.value? hiddenText:instructionsForEnteringPersonalData
 )
+
+const eraseLoadText = computed(()=>{
+if(props.toggle===false){
+  return true
+} else {return false}
+});
+watch(eraseLoadText,(newValue)=>{
+if(newValue)loadText.value='';
+})
 </script>
 
 <style lang="scss" module>
