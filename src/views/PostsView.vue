@@ -59,8 +59,8 @@ async function authorization(){
   //useAuthorization.value=true;
   try{
     const {data} = await $api.post('/users',{name:name.value, password:password.value});
-    useAuthorization.value=true;
-    console.log(data)
+    if (data.id)useAuthorization.value=true;
+    //console.log(data)
   } catch(err) {
     alert(err)
   } finally{
