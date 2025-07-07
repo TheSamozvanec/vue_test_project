@@ -1,6 +1,6 @@
 <template>
   <header :class="decor">
-    <ToggleStyle @set-decor="setDecor" />
+    <ToggleStyle />
     <div class="use">Content</div>
     <div>Products</div>
     <div>Blog</div>
@@ -11,24 +11,30 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import ToggleStyle from './Buttons/ToggleStyle.vue';
+import { useDecor } from '@/composables/useDecor';
 
 export default defineComponent({
   components: {
     ToggleStyle,
   },
-  data() {
-    return {
-      decor: 'dark',
-    };
-  },
-  methods: {
-    setDecor(decor: string) {
-      this.decor = decor;
-      this.$emit('setDecor', this.decor);
-    },
-  },
-  emits: ['setDecor'],
-});
+  computed:{
+    decor(){
+      return useDecor.value;
+    }
+  }
+  // data() {
+  //   return {
+  //     decor: 'dark',
+  //   };
+  // },
+//   methods: {
+//     setDecor(decor: string) {
+//       this.decor = decor;
+//       this.$emit('setDecor', this.decor);
+//     },
+//   },
+//   emits: ['setDecor'],
+ });
 </script>
 
 <style scoped>

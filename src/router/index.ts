@@ -1,5 +1,7 @@
-import CompositionView from '@/views/CompositionView.vue'
-import OptionsView from '@/views/OptionsView.vue'
+import { useAuthorization } from '@/composables/useAuthorization'
+import AuthLayout from '@/layouts/AuthLayout.vue'
+import MainLayout from '@/layouts/MainLayout.vue'
+import PostsView from '@/views/PostsView.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
 
@@ -8,23 +10,40 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'home',
-      component: OptionsView,
+      name: 'authorization',
+    //   // route level code-splitting
+    //   // this generates a separate chunk (About.[hash].js) for this route
+    //   // which is lazy-loaded when the route is visited.
+      component: PostsView,
+      meta:{layout:AuthLayout}
+    },
+    {
+      path: '/:post',
+      name: 'post',
+      component: () => import('@/views/PostView.vue'),
+    },
+    {
+      path: '/options',
+      name: 'options',
+      component: () => import ('@/views/OptionsView.vue'),
+      meta:{layout:MainLayout}
     },
     {
       path: '/composition',
       name: 'composition',
-      component: CompositionView,
+      component: () => import ('@/views/CompositionView.vue'),
+      meta:{layout:MainLayout}
     },
-    // {
-    //   path: '/about',
-    //   name: 'about',
-    //   // route level code-splitting
-    //   // this generates a separate chunk (About.[hash].js) for this route
-    //   // which is lazy-loaded when the route is visited.
-    //   component: () => import('../views/AboutView.vue'),
-    // },
   ],
 })
 
+router.beforeEach((to)=>{
+  if((to.name==='post' || 
+    to.name==='composition'||  
+    to.name==='options')&&
+    !useAuthorization.value){
+      alert('Авторизуйтесь!');
+      return {name:'authorization'}
+    }
+})
 export default router

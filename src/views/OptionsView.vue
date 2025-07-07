@@ -1,43 +1,54 @@
-<!--html код и созданные компоненты-->
+
 <template>
-  <PageHeader @set-decor="SetDecor" />
-  <div>
+
+  <div v-if="authorization">
     <PageMain :decor="decor" />
     <PageAside :decor="decor" />
   </div>
-  <PageFooter />
+
 </template>
 
-<!-- script подключение модулей и скрипт-код компонента-->
+
 <script lang="ts">
-// модули (в т.ч. компоненты)
+
 import { defineComponent } from 'vue';
-import PageHeader from '@/components/PageHeader.vue';
-import PageFooter from '@/components/PageFooter.vue';
+
 import PageMain from '@/components/Main/PageMain.vue';
 import PageAside from '@/components/PageAside.vue';
+import { useDecor } from '@/composables/useDecor';
+import { useAuthorization } from '@/composables/useAuthorization';
+import { useRouter } from 'vue-router';
 
-// скрипт-код компонента
+
 export default defineComponent({
-  // компоненты
+ 
   components: {
-    PageHeader,
-    PageFooter,
     PageMain,
     PageAside,
   },
-  // реактивные переменные
-  data() {
-    return {
-      decor: 'dark',
-    };
-  },
-  // методы управления реактивными переменными
-  methods: {
-    SetDecor(decor: string) {
-      this.decor = decor;
+  
+  computed:{
+    decor(){
+      return useDecor.value
     },
+    authorization(){
+      return useAuthorization.value
+    }
   },
+  
+  beforeCreate(){
+    console.log('mounted');
+    const router = useRouter();
+    if (!useAuthorization.value) {
+      alert('Авторизуйтесь!')
+      router.push('/')
+    };
+  }
+  // methods: {
+  //   SetDecor(decor: string) {
+  //     this.decor = decor;
+  //   },
+  // },
 });
 </script>
 

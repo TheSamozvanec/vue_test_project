@@ -1,8 +1,13 @@
 <template>
   <aside :class="decor">
     <h1>Welcome!!!</h1>
-    <p><a href="/Composition"> Composition</a></p>
-    <p><a href="./">Options</a></p>
+    <p><router-link active-class="active-link" :to="{name:'composition'}">Composition</router-link></p>
+    <p><router-link active-class="active-link" :to="{name:'options'}">Options</router-link></p>
+    <p><router-link active-class="active-link" 
+      :to="{name:'authorization'}"
+      @click="auth">
+      home
+    </router-link></p>
     <slot name="push1" />
     <slot name="push2" />
     <slot name="push3" />
@@ -13,9 +18,15 @@
 </template>
 
 <script lang="ts">
+import { useAuthorization } from '@/composables/useAuthorization';
 import { defineComponent } from 'vue';
 
 export default defineComponent({
+  methods:{
+    auth(){
+      useAuthorization.value=false;
+    }
+  },
   props: {
     decor: {
       type: String,
@@ -47,5 +58,8 @@ aside.yellow {
 p {
   background-color: rgba(255, 255, 255, 0);
   text-align: justify;
+}
+.active-link{
+  text-decoration: underline;
 }
 </style>

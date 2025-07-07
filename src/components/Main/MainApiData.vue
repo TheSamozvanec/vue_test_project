@@ -35,10 +35,10 @@ const posts = ref()
 // fetch('https://official-joke-api.appspot.com/random_joke') // сработал
 // fetch('https://catfact.ninja/fact') // нет
 // fetch('https://api.publicapis.org/entries') // нет
-// fetch('http://jsonplaceholder.typicode.com/todos/') // /todos /comments	/ posts / users /через раз((
+fetch('http://jsonplaceholder.typicode.com/todos/') // /todos /comments	/ posts / users /через раз((
 // fetch ('https://www.boredapi.com/api/activity') // нет
 // fetch('https://api.coindesk.com/v1/bpi/currentprice.json') // нет
-fetch('http://universities.hipolabs.com/search?country=Kazakhstan') // сработал
+// fetch('http://universities.hipolabs.com/search?country=Kazakhstan') // сработал
   .then((response) =>
   { console.log(response.headers)
     if(response.ok) {

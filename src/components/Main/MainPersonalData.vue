@@ -1,14 +1,13 @@
 <template>
-  <div :class="(pass? style['passing-content']:style.main)+' '+style[decor]"  
-  @mousemove="moveElement"> 
+  <div :class="[(pass? style['passing-content']:style.main), style[decor]]"
+  @mousemove="moveElement">
     {{ viewContent}}
     <div
       :class="style['personal-data']"
       v-if="props.toggle"
       :style="{ top: positionY + 'px', left: positionX + 'px' }"
       @mousedown="setMouseDown"
-      @mouseup="setMouseUp"
-    >
+      @mouseup="setMouseUp">
       <input
         tabindex="1"
         id="surname"
@@ -63,7 +62,7 @@
       <br /><span>{{ errorPhoneMassage }} </span>
 
       <br /><input id="approval" type="checkbox"
-        tabindex="5" 
+        tabindex="5"
         v-model="isApproval"
         @mousedown.stop
         @keypress="checkApproval" />
@@ -72,6 +71,8 @@
       </label>
       <br /><span>{{ errorApprovalMassage }}</span>
       <br><button :class="style.sub"
+        v-sho
+        :disabled="!btnSubActive"
         tabindex="6"
         @click="check">
         Отправить
@@ -82,15 +83,14 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, /*watch*/ 
-useCssModule,
-watch} from 'vue';
+import { computed, ref, useCssModule, watch} from 'vue';
 import { hiddenText, instructionsForEnteringPersonalData } from '../differentData/longTexts';
 //___________________________________________props
 const props = defineProps<{ decor: string; toggle: boolean }>();
 //___________________________________________different variables
 const pass = ref(false);
 const loadText = ref('');
+const btnSubActive = ref(true);
 //___________________________________________style
 const style=useCssModule();
 //___________________________________________move panel consts
@@ -115,7 +115,6 @@ const isPhone = ref(false);
 const errorPhoneMassage = ref('');
 //____________________________________________approval consts
 const isApproval = ref(false);
-
 //_____________________________________________move panel functions
 function setMouseDown() {
   if (press.value) return;
@@ -209,7 +208,6 @@ function hasKeyName(ev:KeyboardEvent){
     errorNameMassage.value='Вводите только буквы!'
   } else{errorNameMassage.value='';}
 }
-
 //_____________________________________________email valid functions
 function blurEmail(){
   if(!susEmail.value){errorEmailMassage.value=''}
@@ -218,7 +216,7 @@ function blurEmail(){
     isEmail.value=false;
     return
   }
-  if(!/.+@.+\..+/.test(email.value)){ 
+  if(!/.+@.+\..+/.test(email.value)){
     errorEmailMassage.value='Электронный адрес: name@domen.zone (обязательно:знак "@" и "." доменной зоной)'
     isEmail.value=false;
     return
@@ -307,9 +305,10 @@ function check(){
     if(!confirm('Вы уверены что электронный адрес введён без ошибок?')){
       pass.value=false;
       return;
-    } 
+    }
   }
   loadText.value='Отправляю!'
+  btnSubActive.value=false;
   const searchParams = new URLSearchParams();
   searchParams.set('surname',surname.value);
   searchParams.set('name',name.value);
@@ -322,20 +321,22 @@ function check(){
     if(response.ok){
       pass.value=true;
       alert('Отлично! все получилось!')
-      loadText.value='Отлично! Все получилось!'
+      loadText.value='Отлично! Все получилось!';
+      btnSubActive.value=true;
     } else throw new Error ('error!')
   }).catch(()=>{
     pass.value=false;
     alert('Произошла ошибка! попробуйте еще раз отправить');
-    loadText.value='К сожалению не получилось. Попробуйте ещё раз.'
-  });
+    loadText.value='К сожалению не получилось. Попробуйте ещё раз.';
+    btnSubActive.value=true;
+  })
   
+
 }
 //________________________________________________different variables
 const viewContent = computed(()=>
   pass.value? hiddenText:instructionsForEnteringPersonalData
-)
-
+);
 const eraseLoadText = computed(()=>{
 if(props.toggle===false){
   return true
@@ -343,7 +344,7 @@ if(props.toggle===false){
 });
 watch(eraseLoadText,(newValue)=>{
 if(newValue)loadText.value='';
-})
+});
 </script>
 
 <style lang="scss" module>
@@ -354,7 +355,7 @@ if(newValue)loadText.value='';
   transition: all 1s ease-out;
 }
 .dark{background-color:black;}
-.light{background-color: aqua;}
+.light{background-color: rgb(131, 188, 250);}
 .green{background-color: rgb(77, 255, 0);}
 .yellow{background-color: rgb(255, 247, 0);}
 .passing-content{
@@ -362,7 +363,7 @@ if(newValue)loadText.value='';
   margin: 10px auto;
   color:blue;
   padding: 1em;
-  font-size: 5em; 
+  font-size: 5em;
   text-align: center;
   background-image: url(public/pass.jpg);
   background-repeat: no-repeat;
@@ -379,26 +380,26 @@ if(newValue)loadText.value='';
   height: 420px;
   background: linear-gradient(30deg, aqua 10%, green 90%);
   border: 3px ridge red;
-  input,label,span{
-  padding-bottom: 3px;
-  margin-left: 5px;
-  margin-top: 5px;
-  font-size: 16px;
-  }
-  .error{
-  font-weight: bold;
-  color: red;
-  font-size: 16px;
-  }
-  .sus{
-  font-weight: bold;
-  color: rgb(178, 66, 6);
-  font-size: 16px;
-  }
-  .sub{
-  margin-left:150px;
-  padding:0.5em;
-  }
+    input,label,span{
+    padding-bottom: 3px;
+    margin-left: 5px;
+    margin-top: 5px;
+    font-size: 16px;
+    }
+    .error{
+    font-weight: bold;
+    color: red;
+    font-size: 16px;
+    }
+    .sus{
+    font-weight: bold;
+    color: rgb(178, 66, 6);
+    font-size: 16px;
+    }
+    .sub{
+    margin-left:150px;
+    padding:0.5em;
+    }
 }
 
 </style>

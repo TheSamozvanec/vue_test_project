@@ -7,6 +7,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { decorations } from '../differentData/decorations';
+import { useDecor } from '@/composables/useDecor';
 export default defineComponent({
   data() {
     return {
@@ -19,12 +20,12 @@ export default defineComponent({
       this.decorIndex = this.decorIndex < decorations.length - 1 ? this.decorIndex + 1 : 0;
     },
   },
-  emits: ['setDecor'],
+  //emits: ['setDecor'],
   watch: {
     decorIndex: {
       handler(val) {
         this.decor = decorations[val];
-        this.$emit('setDecor', this.decor);
+        useDecor.value=this.decor;
       },
       immediate: true,
     },
