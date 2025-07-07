@@ -58,7 +58,7 @@ async function authorization(){
   loader.value=true;
   //useAuthorization.value=true;
   try{
-    const {data} = await $api.post('/users');
+    const {data} = await $api.post('/users',{name:name.value, password:password.value});
     useAuthorization.value=true;
     console.log(data)
   } catch(err) {
