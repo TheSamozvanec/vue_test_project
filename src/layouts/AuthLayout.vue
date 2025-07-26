@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="head"> Страница авторизации</div>
+    <div class="head"> Страница постов</div>
     <router-view/>
   </div>
 </template>

@@ -1,12 +1,13 @@
 
 <template>
 
-  <div v-if="authorization">
-    <PageMain :decor="decor" />
-    <PageAside :decor="decor" />
+  <div>
+    <PageMain :decor="decorStore.decor" />
+    <PageAside :decor="decorStore.decor" />
   </div>
 
 </template>
+
 
 
 <script lang="ts">
@@ -15,10 +16,8 @@ import { defineComponent } from 'vue';
 
 import PageMain from '@/components/Main/PageMain.vue';
 import PageAside from '@/components/PageAside.vue';
-import { useDecor } from '@/composables/useDecor';
-import { useAuthorization } from '@/composables/useAuthorization';
-import { useRouter } from 'vue-router';
-
+import { mapStores } from 'pinia';
+import { useDecorStore } from '@/stores/decor';
 
 export default defineComponent({
  
@@ -28,27 +27,9 @@ export default defineComponent({
   },
   
   computed:{
-    decor(){
-      return useDecor.value
-    },
-    authorization(){
-      return useAuthorization.value
-    }
+    ...mapStores(useDecorStore)
   },
   
-  beforeCreate(){
-    console.log('mounted');
-    const router = useRouter();
-    if (!useAuthorization.value) {
-      alert('Авторизуйтесь!')
-      router.push('/')
-    };
-  }
-  // methods: {
-  //   SetDecor(decor: string) {
-  //     this.decor = decor;
-  //   },
-  // },
 });
 </script>
 

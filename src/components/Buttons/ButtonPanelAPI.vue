@@ -2,14 +2,14 @@
   <button :class="'button2 ' + (filter === 'all' ? 'insert' : '')" @click="filter = 'all'">
     All
   </button>
-  <button :class="'button2 ' + (filter === 'State' ? 'insert' : '')" @click="filter = 'State'">
-    State University
+  <button :class="'button2 ' + (filter === 'completed' ? 'insert' : '')" @click="filter = 'completed'">
+    completed
   </button>
   <button
-    :class="'button2 ' + (filter === 'University' ? 'insert' : '')"
-    @click="filter = 'University'"
+    :class="'button2 ' + (filter === 'process' ? 'insert' : '')"
+    @click="filter = 'process'"
   >
-    University
+    process
   </button>
 </template>
 

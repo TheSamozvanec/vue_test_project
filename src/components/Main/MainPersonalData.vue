@@ -1,10 +1,10 @@
 <template>
-  <div :class="[(pass? style['passing-content']:style.main), style[decor]]"
+  <div :class="[(pass? style['passing-content']:style.main), style[props.decor]]"
   @mousemove="moveElement">
-    {{ viewContent}}
+    {{viewContent}}
     <div
       :class="style['personal-data']"
-      v-if="props.toggle"
+      v-if="toggle"
       :style="{ top: positionY + 'px', left: positionX + 'px' }"
       @mousedown="setMouseDown"
       @mouseup="setMouseUp">
@@ -19,7 +19,9 @@
         @keypress="hasKeySurname"
       :class="!isSurname? style.error:''"/>
       <label for="surname" :class="!isSurname? style.error:''"> Фамилия </label>
-      <br /><span>{{ errorSurnameMassage }}</span>
+      <br />
+      
+      <span> {{errorSurnameMassage}} </span>
 
       <br /><input
         tabindex="2"
@@ -32,7 +34,9 @@
         @keypress="hasKeyName"
       :class="!isName? style.error:''"/>
       <label for="name" :class="!isName? style.error:''"> Имя </label>
-      <br /><span>{{ errorNameMassage }}</span>
+      <br />
+      
+      <span> {{errorNameMassage}} </span>
 
       <br /><input
         tabindex="3"
@@ -45,7 +49,9 @@
       :class="(!isEmail? style.error:'') + ' ' + (susEmail? style.sus:'')"
       />
       <label for="eMail" :class="(!isEmail? style.error:'') + ' ' + (susEmail? style.sus:'')"> Электронная почта </label>
-      <br /><span>{{ errorEmailMassage }}</span>
+      <br />
+      
+      <span> {{errorEmailMassage}} </span>
 
       <br /><input
         tabindex="4"
@@ -59,7 +65,8 @@
         @keypress="hasKeyPhone"
       :class="!isPhone? style.error:''"/>
       <label for="phone" :class="!isPhone? style.error:''"> Номер телефона </label>
-      <br /><span>{{ errorPhoneMassage }} </span>
+      <br />
+      <span> {{errorPhoneMassage}} </span>
 
       <br /><input id="approval" type="checkbox"
         tabindex="5"
@@ -69,216 +76,58 @@
       <label for="approval" :class="!isApproval? style.error:''">
         Согласие на обработку персональных данных
       </label>
-      <br /><span>{{ errorApprovalMassage }}</span>
+      <br />
+      
+      <span> {{errorApprovalMassage}} </span>
+      
       <br><button :class="style.sub"
-        v-sho
-        :disabled="!btnSubActive"
+        :disabled="isLoading"
         tabindex="6"
         @click="check">
         Отправить
       </button>
-      <br /><span>{{ loadText }}</span>
+      <br />
+      
+      <span>{{loadText}}</span>
+    
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, ref, useCssModule, watch} from 'vue';
+import { computed,/* ref,*/ useCssModule, watch} from 'vue';
 import { hiddenText, instructionsForEnteringPersonalData } from '../differentData/longTexts';
-//___________________________________________props
-const props = defineProps<{ decor: string; toggle: boolean }>();
-//___________________________________________different variables
-const pass = ref(false);
-const loadText = ref('');
-const btnSubActive = ref(true);
-//___________________________________________style
+import { usePersonalStore } from '@/stores/personal';
+import { storeToRefs } from 'pinia';
+import { useAuthorizationStore } from '@/stores/authorization';
+import { usePostsStore } from '@/stores/posts';
+
 const style=useCssModule();
-//___________________________________________move panel consts
-const press = ref(false);
-const positionX = ref(200);
-const positionY = ref(-10);
+const props = defineProps<{ decor: string}>();
+const personal = usePersonalStore();
+const passing = useAuthorizationStore();
+const {toggle} = storeToRefs(personal);
+const {toggleOff}=personal;
+const {pass, passLoadText:loadText} = storeToRefs(passing);
+const {positionX, positionY}=storeToRefs(personal);
+const {setMouseDown, setMouseUp,moveElement} = personal;
+const posts = usePostsStore();
+const {postPassing} = posts;
+const {isLoading} = storeToRefs(posts);
 //___________________________________________initial valid consts
-const surname = ref('');
-const isSurname = ref(false);
-const errorSurnameMassage = ref('');
-const name = ref('');
-const isName = ref(false);
-const errorNameMassage = ref('');
+const {surname,isSurname, errorSurnameMassage} = storeToRefs(personal);
+const {inSurname, blurSurname, hasKeySurname}=personal
+const {name, isName, errorNameMassage} = storeToRefs(personal);
+const {inName, blurName, hasKeyName} = personal;
 //___________________________________________email valid consts
-const email = ref('');
-const isEmail = ref(false);
-const susEmail = ref(false);
-const errorEmailMassage = ref('');
+const {email, isEmail, susEmail, errorEmailMassage} = storeToRefs(personal);
+const {blurEmail, inEmail} = personal;
 //___________________________________________phone valid consts
-const phone = ref('+7(');
-const isPhone = ref(false);
-const errorPhoneMassage = ref('');
+const {phone,isPhone,errorPhoneMassage} = storeToRefs(personal);
+const {delPhone, inPhone, blurPhone, hasKeyPhone} = personal;
 //____________________________________________approval consts
-const isApproval = ref(false);
-//_____________________________________________move panel functions
-function setMouseDown() {
-  if (press.value) return;
-  press.value = true;
-}
-function setMouseUp() {
-  press.value = false;
-}
-function moveElement(ev: MouseEvent) {
-  if (!press.value) return;
-  positionY.value = ev.pageY - 250;
-  positionX.value = ev.pageX - 300;
-}
-//_____________________________________________initials valid function
-function blurSurname(){
-  if(!surname.value){
-     errorSurnameMassage.value = 'Поле недолжно быть пустым!';
-      isSurname.value = false;
-      return
-  }
-  if(surname.value.length<3){
-    errorSurnameMassage.value = 'Слишком мало символов!';
-      isSurname.value = false;
-      return
-  }
-  inSurname()
-  inName()
-  if (isName.value) errorNameMassage.value=''
-}
-function inSurname() {
- // errorSurnameMassage.value = '';
-  isSurname.value=true;
-  if (name.value) {
-    if (
-      (/[a-zA-Z]/g.test(name.value) && /[а-яёА-ЯЁ]/g.test(surname.value)) ||
-      (/[а-яёА-ЯЁ]/g.test(name.value) && /[a-zA-Z]/g.test(surname.value))
-    ) {
-      errorSurnameMassage.value = 'Кириллица или латиница?';
-      isSurname.value = false;
-    }
-  } else if (/[a-zA-Z][а-яё]/g.test(surname.value) ||
-      /[А-ЯЁа-яё][a-z]/g.test(surname.value)){
-      errorSurnameMassage.value = 'Кириллица или латиница?';
-      isSurname.value = false;
-    }
-  surname.value=surname.value.replace(/[^A-Za-zА-ЯЁа-яЁ]/g,'');
-  surname.value=surname.value.slice(0,1).toUpperCase()+
-  surname.value.slice(1).toLowerCase();
- }
-function hasKeySurname(ev:KeyboardEvent){
-  if((/[^A-Za-zА-ЯЁа-яё]/g.test(ev.key))){
-    errorSurnameMassage.value='Вводите только буквы!'
-  } else{errorSurnameMassage.value='';}
-}
-function blurName(){
-  if(!name.value){
-     errorNameMassage.value = 'Поле недолжно быть пустым!';
-      isName.value = false;
-      return
-  }
-  if(name.value.length<3){
-    errorNameMassage.value = 'Слишком мало символов!';
-      isName.value = false;
-      return
-  }
-  inSurname()
-  inName()
-  if (isSurname.value) errorSurnameMassage.value=''
-}
-function inName() {
-  isName.value=true;
-  if (surname.value) {
-    if (
-      (/[a-zA-Z]/g.test(surname.value) && /[а-яёА-ЯЁ]/g.test(name.value)) ||
-      (/[а-яёА-ЯЁ]/g.test(surname.value) && /[a-zA-Z]/g.test(name.value))
-    ) {
-      errorNameMassage.value = 'Кириллица или латиница?';
-      isName.value = false;
-    }
-  } else if (/[a-zA-Z][а-яё]/g.test(name.value) ||
-      /[А-ЯЁа-яё][a-z]/g.test(name.value)){
-      errorSurnameMassage.value = 'Кириллица или латиница?';
-      isSurname.value = false;
-    }
-  name.value=name.value.replace(/[^A-Za-zА-ЯЁа-яЁ]/g,'');
-  name.value=name.value.slice(0,1).toUpperCase()+
-  name.value.slice(1).toLowerCase();
- }
-function hasKeyName(ev:KeyboardEvent){
-  if((/[^A-Za-zА-ЯЁа-яё]/g.test(ev.key))){
-    errorNameMassage.value='Вводите только буквы!'
-  } else{errorNameMassage.value='';}
-}
-//_____________________________________________email valid functions
-function blurEmail(){
-  if(!susEmail.value){errorEmailMassage.value=''}
-  if(!email.value){
-    errorEmailMassage.value='Поле недолжно быть пустым!'
-    isEmail.value=false;
-    return
-  }
-  if(!/.+@.+\..+/.test(email.value)){
-    errorEmailMassage.value='Электронный адрес: name@domen.zone (обязательно:знак "@" и "." доменной зоной)'
-    isEmail.value=false;
-    return
-  }
-  isEmail.value=true;
-}
-function inEmail(){
-  errorEmailMassage.value='';
-  susEmail.value=false;
-  if(/[А-ЯЁа-яё]/g.test(email.value)){
-    susEmail.value=true;
-    errorEmailMassage.value='электронный адрес содержит кириллицу. Это, возможно ошибка!'
-    return
-  }
-  if(/[\s!#\$%&~=,']|\.{2,}/g.test(email.value)){
-    susEmail.value=true;
-    errorEmailMassage.value='электронный адрес содержит нежелательные знаки. Это, возможно ошибка!'
-  }
-}
-//_____________________________________________phone valid functions
-function delPhone() {
-  if (phone.value.length === 7) phone.value = phone.value.slice(0, 6);
-  if (phone.value.length === 11) phone.value = phone.value.slice(0, 10);
-  if (phone.value.length === 14) phone.value = phone.value.slice(0, 13);
-  return;
-}
-function blurPhone() {
-  if (phone.value.length < 16) {
-    errorPhoneMassage.value = 'Федеральный номер сотового телефона содержит больше цифр!!!';
-    isPhone.value = false;
-    return;
-  }
-  isPhone.value = true;
-}
-function inPhone() {
-  if (phone.value.length > 16) {
-    phone.value = phone.value.slice(0, 16);
-    errorPhoneMassage.value = 'Достаточно! Переходим дальше)))';
-  }
-  let txt: string = phone.value;
-  txt = txt.slice(2);
-  txt = txt.replace(/\D/g, '');
-  txt = '+7(' + txt;
-  if (txt.length >= 6) txt = txt.slice(0, 6) + ')' + txt.slice(6);
-  if (txt.length >= 10) txt = txt.slice(0, 10) + '-' + txt.slice(10);
-  if (txt.length >= 13) txt = txt.slice(0, 13) + '-' + txt.slice(13);
-  phone.value = txt;
-}
-function hasKeyPhone(ev: KeyboardEvent) {
-  if (/\D/.test(ev.key)) {
-    errorPhoneMassage.value = 'Пожалуйста, вводите только цифы!!!';
-  } else {
-    errorPhoneMassage.value = '';
-  }
-}
-//______________________________________________approval valid function
-const errorApprovalMassage = computed(() =>
-  isApproval.value ? 'Оk!' : 'Необходимо согласие на обработку персональных данных!',
-);
-function checkApproval(ev:KeyboardEvent){
-  if(ev.key==='Enter'){isApproval.value=!isApproval.value}
-}
+const {isApproval, errorApprovalMassage} = storeToRefs(personal);
+const {checkApproval} = personal;
 //_______________________________________________checked
 function check(){
   if(!isSurname.value || !isName.value){
@@ -307,43 +156,17 @@ function check(){
       return;
     }
   }
-  loadText.value='Отправляю!'
-  btnSubActive.value=false;
-  const searchParams = new URLSearchParams();
-  searchParams.set('surname',surname.value);
-  searchParams.set('name',name.value);
-  searchParams.set('email',email.value);
-  searchParams.set('phone',phone.value);
-  fetch('https://jsonplaceholder.typicode.com/users/',{
-    method:'post',
-    body:searchParams
-  }).then((response)=>{
-    if(response.ok){
-      pass.value=true;
-      alert('Отлично! все получилось!')
-      loadText.value='Отлично! Все получилось!';
-      btnSubActive.value=true;
-    } else throw new Error ('error!')
-  }).catch(()=>{
-    pass.value=false;
-    alert('Произошла ошибка! попробуйте еще раз отправить');
-    loadText.value='К сожалению не получилось. Попробуйте ещё раз.';
-    btnSubActive.value=true;
-  })
-  
-
+  postPassing()
 }
+watch (loadText,(newVal)=>{
+  if(newVal==='Отлично! Все получилось!') setTimeout(toggleOff,500)
+})
 //________________________________________________different variables
-const viewContent = computed(()=>
-  pass.value? hiddenText:instructionsForEnteringPersonalData
-);
-const eraseLoadText = computed(()=>{
-if(props.toggle===false){
-  return true
-} else {return false}
-});
-watch(eraseLoadText,(newValue)=>{
-if(newValue)loadText.value='';
+const viewContent = computed(()=>{
+  if (pass.value) {return hiddenText
+  } else {
+    return instructionsForEnteringPersonalData
+  }
 });
 </script>
 

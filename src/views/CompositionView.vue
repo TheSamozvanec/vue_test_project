@@ -1,21 +1,24 @@
 <template>
-  <div v-if="useAuthorization">
-    <DivBeforeMain @set-color="(val: string) => setColor(val)">
+  <div>
+    <DivBeforeMain @set-color="(val) => setColor(val)">
       <ButtonPanelMock
         v-if="asideInsert > 0 && asideInsert < 3"
-        @set-filter="(val: string) => setFilter(val)"/>
-      <ButtonPanelAPI v-if="asideInsert === 3" @set-filter="(val: string) => setFilter(val)" />
-      <ButtonMoveElement v-if="asideInsert === 4" @set-toggle="(val: boolean) => setToggle(val)" />
+        @set-filter="(val) => setFilter(val)"
+      />
+      <ButtonPanelAPI v-if="asideInsert === 3" @set-filter="(val) => setFilter(val)" />
+      <ButtonMoveElement v-if="asideInsert === 4" />
     </DivBeforeMain>
     <div class="content">
       <MainComposition :color="color" v-if="asideInsert === 0" />
-      <MainUserData :decor="useDecor" :filter="filter" v-if="asideInsert === 1" />
-      <MainMockChat :decor="useDecor" :filter="filter" v-if="asideInsert === 2" />
-      <MainApiData :decor="useDecor" :filter="filter" v-if="asideInsert === 3" />
-      <MainMoveElement :decor="useDecor" :toggle="toggle" v-if="asideInsert === 4" />
-      <PageAside :decor="useDecor">
+      <MainUserData :decor="decor" :filter="filter" v-if="asideInsert === 1" />
+      <MainMockChat :decor="decor" :filter="filter" v-if="asideInsert === 2" />
+      <MainApiData :decor="decor" :filter="filter" v-if="asideInsert === 3" />
+      <MainPersonalData :decor="decor" :toggle="toggle" v-if="asideInsert === 4" />
+      <PageAside :decor="decor">
         <template #push1>
-          <p @click="asideInsert = 0" :class="asideInsert === 0 ? 'insert' : ''">Color illustration</p>
+          <p @click="asideInsert = 0" :class="asideInsert === 0 ? 'insert' : ''">
+            Color illustration
+          </p>
         </template>
         <template #push2>
           <p @click="asideInsert = 1" :class="asideInsert === 1 ? 'insert' : ''">Mock user data</p>
@@ -27,7 +30,9 @@
           <p @click="asideInsert = 3" :class="asideInsert === 3 ? 'insert' : ''">test API data</p>
         </template>
         <template #push5>
-          <p @click="asideInsert = 4" :class="asideInsert === 4 ? 'insert' : ''">Personal data test</p>
+          <p @click="asideInsert = 4" :class="asideInsert === 4 ? 'insert' : ''">
+            Personal data test
+          </p>
         </template>
       </PageAside>
     </div>
@@ -40,42 +45,29 @@ import MainComposition from '@/components/Main/MainComposition.vue';
 import MainMockChat from '@/components/Main/MainMockChat.vue';
 import MainUserData from '@/components/Main/MainUserData.vue';
 import PageAside from '@/components/PageAside.vue';
-//import PageFooter from '@/components/PageFooter.vue';
-//import PageHeader from '@/components/PageHeader.vue';
-import { /*onMounted, onUpdated, */ ref } from 'vue';
-import MainApiData from '../components/Main/MainApiData.vue';
+import { ref } from 'vue';
+import MainApiData from '@/components/Main/MainApiData.vue';
 import ButtonPanelMock from '@/components/Buttons/ButtonPanelMock.vue';
 import ButtonPanelAPI from '@/components/Buttons/ButtonPanelAPI.vue';
 import ButtonMoveElement from '@/components/Buttons/ButtonMoveElement.vue';
-import MainMoveElement from '@/components/Main/MainPersonalData.vue';
-import { useDecor } from '@/composables/useDecor';
-import { useAuthorization } from '@/composables/useAuthorization';
-import { useRouter } from 'vue-router';
+import MainPersonalData from '@/components/Main/MainPersonalData.vue';
+import { useDecorStore } from '@/stores/decor';
+import { storeToRefs } from 'pinia';
 
 const asideInsert = ref(0);
 const color = ref('dark');
 const filter = ref('');
 const toggle = ref(false);
-const router = useRouter()
+const decorations = useDecorStore();
+const {decor} = storeToRefs(decorations)
 
-//function setDecor(val: string) {
-// decor.value = val;
-//}
 function setColor(val: string) {
   color.value = val;
 }
 function setFilter(val: string) {
   filter.value = val;
 }
-function setToggle(val: boolean) {
-  toggle.value = val;
-}
-// onMounted(() => console.log('mounted'));
-// onUpdated(() => console.log('update'));
-if (!useAuthorization.value) {
-  alert('Авторизуйтесь!');
-  router.push('/');
-  }
+
 </script>
 
 <style scoped>

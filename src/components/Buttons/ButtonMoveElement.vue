@@ -1,24 +1,16 @@
 <template>
-  <button :class="'button2 ' + (toggle ? 'insert' : '')" @click="toggle = !toggle">
+  <button :class="'button2 ' + (toggle ? 'insert' : '')" @click="toggled">
     Персональные данные
   </button>
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue';
-import type { ISetToggleEmit } from '../differentData/emitsInterface';
+import { usePersonalStore } from '@/stores/personal';
+import { storeToRefs } from 'pinia';
 
-const toggle = ref(false);
-const emits = defineEmits<ISetToggleEmit>();
-watch(
-  toggle,
-  (newToggle) => {
-    emits('set-toggle', newToggle);
-  },
-  {
-    immediate: true,
-  },
-);
+const personal = usePersonalStore();
+const {toggle} = storeToRefs(personal);
+const {toggled}=personal;
 </script>
 
 <style scoped>

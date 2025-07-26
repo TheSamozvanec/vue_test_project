@@ -1,36 +1,38 @@
 <template>
   <div :class="style['main-test']">
-    The Posts!!!<br>
+    Authorization<br>
+    <p :class="style.text">имя </p> 
+    <input v-model="authorName"/>
+    <p :class="style.text">пароль </p> 
+    <input v-model="authorPassword"/>
+    <br/>
     <button :class="style.btn" 
-      @click="router.push({name:'home'})">
+      @click="postAuthor"
+      :disabled="isLoading">
+    авторизоваться
+    </button>
+    <button :class="style.btn" 
+      @click="router.push({name:'composition'})"
+      :disabled="!pageAuthorization">
      к приложению
     </button>
-    <ul>
-      <li v-for="post in posts" :key="post.id">
-        <router-link :to="{name:'post', params:{post:post.id}}">
-        <h1>{{ post.title }}</h1>
-        </router-link>
-        <p>{{ post.body }}</p>
-      </li>
-    </ul>
   </div>
 </template>
 
 <script setup lang="ts">
-//import { useAuthorizationStore } from '@/stores/authorization';
+import { useAuthorizationStore } from '@/stores/authorization';
 import { usePostsStore } from '@/stores/posts';
 import { storeToRefs } from 'pinia';
 import { useCssModule } from 'vue';
 import { useRouter } from 'vue-router';
 
-//const useAuthorization = useAuthorizationStore();
+const useAuthorization = useAuthorizationStore();
 const usePostStore = usePostsStore();
-//const {pageAuthorization, authorName, authorPassword}=storeToRefs(useAuthorization);
-const {posts, /*isLoading*/} = storeToRefs(usePostStore);
-const {getData, /*postAuthor*/} = usePostStore;
+const {pageAuthorization, authorName, authorPassword}=storeToRefs(useAuthorization);
+const {isLoading} = storeToRefs(usePostStore);
+const { postAuthor} = usePostStore;
 const style = useCssModule();
 const router = useRouter();
-getData('/posts');
 
 </script>
 

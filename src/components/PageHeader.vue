@@ -1,5 +1,5 @@
 <template>
-  <header :class="decor">
+  <header :class="decorStore.decor">
     <ToggleStyle />
     <div class="use">Content</div>
     <div>Products</div>
@@ -11,29 +11,17 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import ToggleStyle from './Buttons/ToggleStyle.vue';
-import { useDecor } from '@/composables/useDecor';
+import { mapStores } from 'pinia';
+import { useDecorStore } from '@/stores/decor';
 
 export default defineComponent({
   components: {
     ToggleStyle,
   },
   computed:{
-    decor(){
-      return useDecor.value;
-    }
+    ...mapStores(useDecorStore)
   }
-  // data() {
-  //   return {
-  //     decor: 'dark',
-  //   };
-  // },
-//   methods: {
-//     setDecor(decor: string) {
-//       this.decor = decor;
-//       this.$emit('setDecor', this.decor);
-//     },
-//   },
-//   emits: ['setDecor'],
+  
  });
 </script>
 

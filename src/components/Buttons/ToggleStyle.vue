@@ -1,34 +1,17 @@
 <template>
-  <button :class="decor + ' button'" @:click="setDecor">
-    {{ decor }}
+  <button :class="decorStore.decor + ' button'" @:click="decorStore.setDecor">
+    {{ decorStore.decor }}
   </button>
 </template>
 
 <script lang="ts">
+import { useDecorStore } from '@/stores/decor';
+import { mapStores} from 'pinia';
 import { defineComponent } from 'vue';
-import { decorations } from '../differentData/decorations';
-import { useDecor } from '@/composables/useDecor';
+
 export default defineComponent({
-  data() {
-    return {
-      decorIndex: 0,
-      decor: decorations[0],
-    };
-  },
-  methods: {
-    setDecor() {
-      this.decorIndex = this.decorIndex < decorations.length - 1 ? this.decorIndex + 1 : 0;
-    },
-  },
-  //emits: ['setDecor'],
-  watch: {
-    decorIndex: {
-      handler(val) {
-        this.decor = decorations[val];
-        useDecor.value=this.decor;
-      },
-      immediate: true,
-    },
+  computed: {
+    ...mapStores(useDecorStore)
   },
 });
 </script>

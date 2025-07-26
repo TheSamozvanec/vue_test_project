@@ -5,15 +5,15 @@
 </template>
 
 <script setup lang="ts">
-import { $api } from '@/components/api';
-import type { IPost } from '@/components/mock/types';
+import { $api } from '../components/api';
+import type { IPostAPI } from '../components/mock/types';
 import { ref } from 'vue';
 import { useRoute } from 'vue-router';
 const route = useRoute();
-const postId = route.params.post;
-const post =ref<IPost>({} as IPost);
+const postID = route.params.post;
+const post =ref<IPostAPI>({} as IPostAPI);
 const fetchPosts = async () => {
-  try {const {data} = await $api.get(`/posts/${postId}`);
+  try {const {data} = await $api.get(`/posts/${postID}`);
     post.value = data;
   } catch (err) {
     console.error(err);
